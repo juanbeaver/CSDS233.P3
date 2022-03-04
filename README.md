@@ -51,3 +51,10 @@ Time Spent: \~30 min, 100% Done (kinda)
   * Everything works now!
 
 Time Spent: 10 min, 100% Done (actually)
+
+## Mar. 4, 1:00 AM
+
+* Fixed some minor bugs in search() method and demonstration.&#x20;
+* Started the AVLTree class skeleton.
+* Went back and cleaned up and commented on all classes.
+*
