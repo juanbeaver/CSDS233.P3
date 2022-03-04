@@ -10,6 +10,11 @@
 
 \~Time spent: 30min
 
-## Feb. 25, 7:00 AM
+## Mar. 3, 2:00 AM
 
-*
+* testInsert() method base cases written.
+* testSearch() method base cases written.
+* testDelete() method base cases written.
+* Changed from having a seperate class for the BinaryNode to an internal private class.
+
+Time Spent: \~ 40min, 10%
