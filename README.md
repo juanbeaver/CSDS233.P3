@@ -44,3 +44,10 @@ Time Spent: \~1hr 20 min, 90%
   * Did not 100% finish this method, but it's super close! I had issues with out of bounds indexes.
 
 Time Spent: \~30 min, 100% Done (kinda)
+
+## Mar. 3, 11:55 PM
+
+* Found a typo in the kthSmallest() method that was referencing the object's root instead of the parameter root that was passed in.
+  * Everything works now!
+
+Time Spent: 10 min, 100% Done (actually)
