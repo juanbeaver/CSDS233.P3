@@ -1,13 +1,13 @@
+import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class BinarySearchTree<T extends Comparable<T>, V extends T> {
 
     private class BinaryNode{
 
-        public final T key;
+        public T key;
 
-        public final V value;
+        public V value;
 
         public BinaryNode left = null;
 
@@ -25,6 +25,7 @@ public class BinarySearchTree<T extends Comparable<T>, V extends T> {
 
     public static void main(String[] args){
         BinarySearchTree<Integer, Integer> test = new BinarySearchTree<>();
+
         test.insert(2, 2);
         test.insert(1, 1);
         test.insert(4, 4);
@@ -37,7 +38,27 @@ public class BinarySearchTree<T extends Comparable<T>, V extends T> {
         test.insert(12, 12);
         test.insert(11, 11);
 
-        test.preorderPrint(test.root);;
+        test.delete(4);
+        test.delete(9);
+
+        System.out.println(test.preorderPrint(test.root));
+
+        System.out.println("The value at key 12 is " + test.search(12) );
+        System.out.println("The value at key 4 is " + test.search(4) );
+
+        System.out.println("The third smallest value is " + test.kthSmallest(3) );
+
+        BinarySearchTree<Double, Double> doubleTestTree = new BinarySearchTree<>();
+        doubleTestTree.insert(2.0, 2.0);    doubleTestTree.insert(5.0, 5.0);
+        doubleTestTree.insert(12.0, 12.0);  doubleTestTree.insert(7.0, 7.0);
+
+        System.out.println("The double value binary search tree: " + doubleTestTree.inorderRec());
+
+        BinarySearchTree<String, String> stringTestTree = new BinarySearchTree<>();
+        stringTestTree.insert("2.0", "two");    stringTestTree.insert("5.0", "five");
+        stringTestTree.insert("12.0", "twelve");  stringTestTree.insert("7.0", "seven");
+
+        System.out.println("The string value binary search tree: " + stringTestTree.inorderRec());
 
     }
 
@@ -47,8 +68,7 @@ public class BinarySearchTree<T extends Comparable<T>, V extends T> {
 
     public String preorderPrint(BinaryNode root, StringBuilder sb) {
         if (root != null) {
-            BinaryNode parent = this.root;
-            sb.append(root.key + " ");
+            sb.append(root.key).append(" ");
             if (root.left != null) {
                 preorderPrint(root.left, sb);
             }
@@ -92,28 +112,116 @@ public class BinarySearchTree<T extends Comparable<T>, V extends T> {
     }
 
     public V search(T key){
-        while(root != null) {
-            if (key.compareTo(root.key) == 0) {
-                return root.value;
-            } else if (key.compareTo(root.key) > 0) {
-                root = root.right;
-            } else if (key.compareTo(root.key) < 0) {
-                root = root.left;
+        BinaryNode currRoot = root;
+        while(currRoot != null) {
+            if (key.compareTo(currRoot.key) == 0) {
+                return currRoot.value;
+            } else if (key.compareTo(currRoot.key) > 0) {
+                currRoot = currRoot.right;
+            } else if (key.compareTo(currRoot.key) < 0) {
+                currRoot = currRoot.left;
             }
         }
-        throw new NoSuchElementException();
+        return null;
     }
 
-    public void delete(T key){
+    public void deleteNode(BinaryNode currRoot, BinaryNode parent){
 
+        //Case 1 & 2 node to be deleted has 1 or 0 children
+        if(currRoot.left == null || currRoot.right == null){
+            BinaryNode deletedNodeChild;
+            if(currRoot.left != null){
+                deletedNodeChild = currRoot.left;
+            }
+            else{
+                deletedNodeChild = currRoot.right;
+            }
+
+            if(currRoot == root){
+                root = deletedNodeChild;
+            }
+            else if(currRoot.key.compareTo(parent.key) >= 0){
+                parent.right = deletedNodeChild;
+            }
+            else{
+                parent.left = deletedNodeChild;
+            }
+        }
+
+        //Case 3 node to be deleted has 2 children
+        else{
+            //Find the smallest node of the right subtree of the node to be deleted.
+            BinaryNode repParent = currRoot;
+            BinaryNode rep = currRoot.right;
+
+            while(rep.left != null){
+                repParent = rep;
+                rep = rep.left;
+            }
+            //Set node to be deleted to smallest in right tree
+            currRoot.key = rep.key;
+            currRoot.value = rep.value;
+
+
+            //Delete the copied node
+            deleteNode(rep, repParent);
+        }
+
+    }
+    public void delete(T key){
+        //Traverse to the node to be deleted, keep parent node saved
+        BinaryNode currRoot = root;
+        BinaryNode parent = currRoot;
+
+        while(currRoot != null){
+            if(key.compareTo(currRoot.key) == 0){
+                break;
+            }
+            else if(key.compareTo(currRoot.key) > 0){
+                parent = currRoot;
+                currRoot = currRoot.right;
+            }
+            else{
+                parent = currRoot;
+                currRoot = currRoot.left;
+            }
+        }
+        if(currRoot != null){
+            deleteNode(currRoot, parent);
+        }
     }
 
     public List<V> inorderRec(){
-        return null;
+        return inorderRec(root, new LinkedList<>());
+    }
+
+    public List<V> inorderRec(BinaryNode root, List<V> list){
+        // Left Root Right
+        if (root != null) {
+            inorderRec(root.left, list);
+            list.add(root.value);
+            inorderRec(root.right, list);
+        }
+        return list;
+
     }
 
     public V kthSmallest(int k){
-        return null;
+        try {
+            return kthSmallest(root, new LinkedList<>()).get(k-1);
+        }
+        catch (IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
+    public List<V> kthSmallest(BinaryNode currRoot, List<V> list){
+        // Left Root Right
+            if (currRoot != null) {
+                kthSmallest(currRoot.left, list);
+                list.add(currRoot.value);
+                kthSmallest(currRoot.right, list);
+            }
+            return list;
+    }
 }
