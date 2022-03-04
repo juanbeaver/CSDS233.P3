@@ -42,3 +42,5 @@ Time Spent: \~1hr 20 min, 90%
 * Wrote the rest of the test methods for the BinarySearchTree class.
 * Wrote kthSmallest() method.
   * Did not 100% finish this method, but it's super close! I had issues with out of bounds indexes.
+
+Time Spent: \~30 min, 100% Done (kinda)
