@@ -36,3 +36,9 @@ Time Spent: \~50 min, 50%
   * &#x20;This was a pretty simple recursive method.
 
 Time Spent: \~1hr 20 min, 90%
+
+## Mar. 3, 10:30 PM
+
+* Wrote the rest of the test methods for the BinarySearchTree class.
+* Wrote kthSmallest() method.
+  * Did not 100% finish this method, but it's super close! I had issues with out of bounds indexes.
