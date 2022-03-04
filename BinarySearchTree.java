@@ -1,25 +1,27 @@
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class BinarySearchTree<T extends Comparable<T>, V extends T> {
 
     private class BinaryNode{
 
-        private final T key;
+        public final T key;
 
-        private final V value;
+        public final V value;
 
-        private BinaryNode left = null;
+        public BinaryNode left = null;
 
-        private BinaryNode right = null;
+        public BinaryNode right = null;
 
-        public BinaryNode(){
-            key = null;
-            value = null;
+        public BinaryNode(T key, V value){
+            this.key = key;
+            this.value = value;
         }
 
     }
 
     public BinaryNode root = null;
+
 
     public static void main(String[] args){
         BinarySearchTree<Integer, Integer> test = new BinarySearchTree<>();
@@ -39,34 +41,67 @@ public class BinarySearchTree<T extends Comparable<T>, V extends T> {
 
     }
 
-    public String preorderPrint(BinaryNode root){
-        StringBuilder s2 = new StringBuilder();
-
-        if(root != null){
-            BinaryNode parent = this.root;
-            s2.append(root.key + " ");
-            System.out.print(root.key + " ");
-
-            if(root.left != null){
-                preorderPrint(root.left);
-            }
-            if(root.right != null){
-                preorderPrint(root.right);
-            }
-        }
-        return s2.toString();
-    }
-
     public BinarySearchTree(){
 
     }
 
-    public void insert(T key, V value){
+    public String preorderPrint(BinaryNode root, StringBuilder sb) {
+        if (root != null) {
+            BinaryNode parent = this.root;
+            sb.append(root.key + " ");
+            if (root.left != null) {
+                preorderPrint(root.left, sb);
+            }
+            if (root.right != null) {
+                preorderPrint(root.right, sb);
+            }
+        }
+        return sb.toString();
+    }
 
+    public String preorderPrint(BinaryNode root){
+        return preorderPrint(root, new StringBuilder());
+    }
+
+    public void insert(T key, V value){
+        BinaryNode currRoot = this.root;
+        BinaryNode parent = null;
+
+        if(currRoot == null){
+            this.root = new BinaryNode(key, value);
+            return;
+        }
+
+        while(currRoot != null) {
+            if (currRoot.key.compareTo(key) > 0) { //key is to the left
+                parent = currRoot;
+                currRoot = currRoot.left;
+            }
+            else if(currRoot.key.compareTo(key) <= 0){ //key is to the right
+                parent = currRoot;
+                currRoot = currRoot.right;
+            }
+        }
+
+        if(key.compareTo(parent.key) > 0){
+            parent.right = new BinaryNode(key, value);
+        }
+        else{
+            parent.left = new BinaryNode(key, value);
+        }
     }
 
     public V search(T key){
-        return null;
+        while(root != null) {
+            if (key.compareTo(root.key) == 0) {
+                return root.value;
+            } else if (key.compareTo(root.key) > 0) {
+                root = root.right;
+            } else if (key.compareTo(root.key) < 0) {
+                root = root.left;
+            }
+        }
+        throw new NoSuchElementException();
     }
 
     public void delete(T key){

@@ -32,7 +32,9 @@ public class BinarySearchTreeTester {
         BinarySearchTree<Integer, Integer> testTree = new BinarySearchTree<>();
 
         //Test if the root is null
-        assertThrows(NoSuchElementException.class, () ->  testTree.search(4));
+        assertThrows(NoSuchElementException.class, () ->  {
+            testTree.search(4);
+        });
 
         //Test when the node to be found is the root node
         testTree.insert(5,5);
@@ -84,12 +86,23 @@ public class BinarySearchTreeTester {
 
     @Test
     public void testInorderRec(){
-        
+        //Test when root node is null
+
+        //Test when only one root exists
+
+        //Test when leaf nodes have only one child
+
+        //Test when leaf nodes have two children
 
     }
 
     @Test
     public void testKthSmallest(){
+        //Test when k is bigger than the BST size
+
+        //Test when the kth smallest is at an edge
+
+        //Test when kth smallest in the inside of the tree
 
     }
 
